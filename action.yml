@@ -1,6 +1,6 @@
 # action.yml
 name: 'third-party-upload'
-description: 'Creates a new Asset Version for an existing asset, and uploads test results for that asset version. By default, this uses the existing Business Unit and Created By User for the Asset. If you need to change these, you can provide the IDs for them.'
+description: 'Upload a third-party scan to the Finite State Platform for analysis.'
 inputs:
   finite-state-client-id:  # id of input
     description: 'Finite State API client ID. This must be provided by Finite State support team.'
