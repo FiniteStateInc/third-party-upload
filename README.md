@@ -23,31 +23,32 @@ By default, the new version adopts the asset's existing values for Business Unit
 
 ## Inputs
 
-| parameter                         | description                                                                                                                                                                           | required | default |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- |
-| finite-state-client-id            | Finite State API client id. This must be provided by Finite State support team.                                                                                                       | `true`   |         |
-| finite-state-secret               | Finite State API secret. This must be provided by Finite State support team.                                                                                                          | `true`   |         |
-| finite-state-organization-context | Organization context. This must be provided by Finite State support team. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.                                                       | `true`   |         |
-| asset-id                          | Asset ID of the asset that the new version will belong to.                                                                                                                            | `true`   |         |
-| version                           | Specify a name for the new asset version.                                                                                                                                             | `true`   |         |
-| file-path                         | Path to the file to be uploaded to the asset version                                                                                                                                  | `true`   |         |
-| test-type                         | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list.](https://docs.finitestate.io/supported-file-types) | `true`   |         |
-| business-unit-id                  | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used.                                      | `false`  |         |
-| created-by-user-id                | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used.                                               | `false`  |         |
-| product-id                        | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used.                                                               | `false`  |         |
-| artifact-description              | (optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). If not provided, the default artifact description will be used.              | `false`  |         |
-
+| parameter | description | required | default |
+| --- | --- | --- | --- |
+| finite-state-client-id | Finite State API client ID. This must be provided by Finite State support team. | `true` |  |
+| finite-state-secret | Finite State API secret. This must be provided by Finite State support team. | `true` |  |
+| finite-state-organization-context | Organization context. This must be provided by Finite State support team. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. | `true` |  |
+| asset-id | Asset ID of the asset that the new version will belong to. | `true` |  |
+| version | Specify a name for the new asset version. | `true` |  |
+| file-path | Path to the file to be uploaded to the asset version. | `true` |  |
+| test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list.](https://docs.finitestate.io/supported-file-types). | `true` |  |
+| automatic-comment | Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in Finite State. | `false` | false |
+| github-token | Token used to generate comment in a pr. Only required if automatic-comment input is true. | `false` |  |
+| business-unit-id | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used. | `false` |  |
+| created-by-user-id | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used. | `false` |  |
+| product-id | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used. | `false` |  |
+| artifact-description | (optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). If not provided, the default artifact description will be used. | `false` |  |
 <!-- action-docs-inputs -->
 
 <!-- action-docs-outputs -->
 
 ## Outputs
 
-| parameter         | description                                            |
-| ----------------- | ------------------------------------------------------ |
-| response          | Response from Finite State servers                     |
-| error             | Error message or details on why the action failed      |
-| asset-version-url | Finite State Binary Analysis URL for the uploaded file |
+| parameter | description |
+| --- | --- |
+| response | Response from Finite State servers. |
+| error | Error message or details on why the action failed. |
+| asset-version-url | Finite State Binary Analysis URL for the uploaded file. |
 
 <!-- action-docs-outputs -->
 
@@ -120,7 +121,7 @@ env:
   ASSET_ID: # Complete with your Asset ID
 
 jobs:
-  finitestate-upload-sbom_results:
+  finitestate-third-party-upload:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo content
@@ -143,8 +144,8 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: SBOM analysis
-        uses: @FiniteStateInc/upload-test-resutls@v1.0.0
-        id: sbom_analysis
+        uses: @FiniteStateInc/third-party-upload@v1.0.0
+        id: third_party_upload
         with:
           finite-state-client-id: ${{ secrets.CLIENT_ID }}
           finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -155,19 +156,19 @@ jobs:
           test-type: # put the test type here
 
       - name: Set response of binary quick scan
-        if: steps.sbom_analysis.outcome=='success'
+        if: steps.third_party_upload.outcome=='success'
         id: set_response
         run: |
-          echo Asset version URL: ${{steps.sbom_analysis.outputs.asset-version-url}}
-          echo Response: "${{steps.sbom_analysis.outputs.response}}"
-          echo Error: "${{steps.sbom_analysis.outputs.error}}"
+          echo Asset version URL: ${{steps.third_party_upload.outputs.asset-version-url}}
+          echo Response: "${{steps.third_party_upload.outputs.response}}"
+          echo Error: "${{steps.third_party_upload.outputs.error}}"
     outputs:
-      ASSET_VERSION_URL: ${{steps.sbom_analysis.outputs.asset-version-url}}
-      ERROR: ${{steps.sbom_analysis.outputs.error}}
-      RESPONSE: ${{steps.sbom_analysis.outputs.response}}
+      ASSET_VERSION_URL: ${{steps.third_party_upload.outputs.asset-version-url}}
+      ERROR: ${{steps.third_party_upload.outputs.error}}
+      RESPONSE: ${{steps.third_party_upload.outputs.response}}
 
   show-link-as-comment: # this job generate a comment automatically in the PR in order to link to finitestate
-    needs: finitestate-upload-sbom_results
+    needs: finitestate-third-party-upload
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -177,7 +178,7 @@ jobs:
         with:
           message: |
             **Hello**, Finite State is uploading your scan! :rocket:.
-            Please <a href="${{needs.finitestate-upload-sbom_results.outputs.ASSET_VERSION_URL}}">click here</a> to see the progress of the analysis over your file.
+            Please <a href="${{needs.finitestate-third-party-upload.outputs.ASSET_VERSION_URL}}">click here</a> to see the progress of the analysis over your file.
             <br />
 
             <a href="https://platform.finitestate.io/">Finite State</a>
