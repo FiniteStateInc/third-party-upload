@@ -1,47 +1,47 @@
 # action.yml
-name: 'upload-test-results'
+name: 'third-party-upload'
 description: 'Creates a new Asset Version for an existing asset, and uploads test results for that asset version. By default, this uses the existing Business Unit and Created By User for the Asset. If you need to change these, you can provide the IDs for them.'
 inputs:
   finite-state-client-id:  # id of input
-    description: 'Finitestate API client id'
+    description: 'Finite State API client ID. This must be provided by Finite State support team.'
     required: true
   finite-state-secret: 
-    description: 'Finitestate API secret'
+    description: 'Finite State API secret. This must be provided by Finite State support team.'
     required: true
   finite-state-organization-context: 
-    description: 'Organization context. This is provided by the Finite State API management. It looks like "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx".'
+    description: 'Organization context. This must be provided by Finite State support team. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.'
     required: true
   asset-id:
-    description: 'Asset ID to create the asset version for.'
+    description: 'Asset ID of the asset that the new version will belong to.'
     required: true
   version:
-    description: 'Version to create the asset version for.'
+    description: 'Specify a name for the new asset version.'
     required: true
   file-path:
-    description: 'Path to the test results file to upload'
+    description: 'Path to the file to be uploaded to the asset version.'
     required: true
   test-type:
-    description: 'Test type. This must be one of the list of supported third party scanner types. For the full list of supported third party scanner types, see the Finite State API documentation.'
+    description: 'Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list.](https://docs.finitestate.io/supported-file-types).'
     required: true  
   business-unit-id:
-    description: '(optional) Business Unit ID to create the asset version for. If not provided, the existing Business Unit for the Asset will be used.'
+    description: '(optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used.'
     required: false
   created-by-user-id:
-    description: '(optional) Created By User ID to create the asset version for. If not provided, the existing Created By User for the Asset will be used.'
+    description: '(optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used.'
     required: false
   product-id:
-    description: '(optional) Product ID to create the asset version for. If not provided, the existing Product for the Asset will be used.'
+    description: '(optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used.'
     required: false
   artifact-description:
     description: '(optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). If not provided, the default artifact description will be used.'
     required: false
 outputs:
   response:
-    description: 'Response get from Finite State servers'
+    description: 'Response from Finite State servers.'
   error:
-    description: 'Error message or details on why the action fails'
+    description: 'Error message or details on why the action failed.'
   asset-version-url:
-    description: 'Finite State Binary Analysis URL for the file uploaded'
+    description: 'Finite State Binary Analysis URL for the uploaded file.'
 
 runs:
   using: 'docker'
