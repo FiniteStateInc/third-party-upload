@@ -31,13 +31,11 @@ By default, the new version adopts the asset's existing values for Business Unit
 | asset-id | Asset ID of the asset that the new version will belong to. | `true` |  |
 | version | Specify a name for the new asset version. | `true` |  |
 | file-path | Path to the file to be uploaded to the asset version. | `true` |  |
-| test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list.](https://docs.finitestate.io/supported-file-types). | `true` |  |
-| automatic-comment | Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in Finite State. | `false` | false |
-| github-token | Token used to generate comment in a pr. Only required if automatic-comment input is true. | `false` |  |
+| test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list](https://docs.finitestate.io/supported-file-types). | `true` |  |
 | business-unit-id | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used. | `false` |  |
 | created-by-user-id | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used. | `false` |  |
 | product-id | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used. | `false` |  |
-| artifact-description | (optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). If not provided, the default artifact description will be used. | `false` |  |
+| artifact-description | (optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). | `false` |  |
 <!-- action-docs-inputs -->
 
 <!-- action-docs-outputs -->
@@ -70,7 +68,7 @@ on:
     - cron: "0 0 * * *"
 ```
 
-## Usage of this action
+## Usage of this Action
 
 You will also need to add some code into your workflow. We have provided an example below. Note, in the example, we only include the required parameters. Refer to the **Inputs** section for more details, including descriptions of optional fields.
 
@@ -82,25 +80,25 @@ with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
   finite-state-organization-context: ${{ secrets.ORGANIZATION_CONTEXT }}
-  asset-id: # put the asset ID here
-  version: # put the version here
-  file-path: # put the path of the file here (e.g., ./cyclonedx.sbom.json)
-  test-type: # put the test type here (e.g., cyclonedx)
+  asset-id: # The ID of the Asset associated with this scan
+  version: # The name of the new Asset Version that will be created
+  file-path: # The path to the file that will be uploaded to the Finite State Platform (e.g., ./cyclonedx.sbom.json)
+  test-type: # The type of third-party scan being uploaded (e.g., cyclonedx). See below for more details.
 ```
 
 Possible `test-types` values can be found at [this link](https://github.com/FiniteStateInc/finite-state-asoc/blob/5f04a982501ab37c9356cddc6e5c65ac6d6a563a/graphql-api/business/src/resolvers/mutations/uploads/accepted_test_types.py#L7).
 
-## Action debugging
+## Action Debugging
 
 All details pertaining to the execution of the action will be recorded. You can review this information in the workflow execution logs, which is a helpful starting point if you encounter any errors during the action's run.
 
 ![logging example](./imgs/debug_info.png)
 
-## Extended feature example (optional)
+## Extended Feature Example (optional)
 
 In this section, we provide a code snippet for integrating this action into your existing workflow. Primarily, it uploads the file to the Finite State Platform for analysis. Once that process is completed, it uses the output of that job to automatically add a comment to the pull request, including a link pointing to the Finite State Binary Analysis URL for the uploaded file. You can customize the comment as desired or utilize the outputs of the action to construct your own.
 
-The job, named <code>show-link-as-comment</code>, is responsible for generating the comment using the output provided by the action.
+The job, named `show-link-as-comment`, is responsible for generating the comment using the output provided by the action.
 
 Ensure to replace certain values, as indicated in the example workflow:
 
@@ -130,15 +128,15 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 
       # - name: (Potentially) Generate SBOM
-      # Uncomment previous line and Put here the build steps (which likely already exist) based on the project
+      # Uncomment the previous line and add the steps to conduct your third-party scan (which likely already exist) based on the project
 
-      - name: Upload binary generated file
+      - name: Upload third-party scan
         uses: actions/upload-artifact@v3
         with:
-          name: binary-artifact
-          path: # Put here the path to your binary file generated in the previous step
+          name: third-party-artifact
+          path: # The path to the scan results generated in the previous step
 
-      - name: Get commit hash to use as version # optional step to auto tag the version
+      - name: Get commit hash to use as version # Optional step to auto tag the version
         id: commit_hash
         run: |
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -151,9 +149,9 @@ jobs:
           finite-state-secret: ${{ secrets.CLIENT_SECRET }}
           finite-state-organization-context: ${{ secrets.ORGANIZATION_CONTEXT }}
           asset-id: ${{env.ASSET_ID}}
-          version: ${{env.COMMIT_HASH}} # you could replace by whatever you want
-          file-path: # Put the same path of Upload binary generated file step here
-          test-type: # put the test type here
+          version: ${{env.COMMIT_HASH}} # You can name this version anything you'd like. Here, we're using the git commit hash associated with the current run.
+          file-path: # Add the same path of the "Upload third-party scan" step here.
+          test-type: # The type of third-party scan being uploaded (e.g., cyclonedx)
 
       - name: Set response of binary quick scan
         if: steps.third_party_upload.outcome=='success'
@@ -167,7 +165,7 @@ jobs:
       ERROR: ${{steps.third_party_upload.outputs.error}}
       RESPONSE: ${{steps.third_party_upload.outputs.response}}
 
-  show-link-as-comment: # this job generate a comment automatically in the PR in order to link to finitestate
+  show-link-as-comment: # This job generates a comment automatically in the PR in order to link to the Finite State Platform
     needs: finitestate-third-party-upload
     runs-on: ubuntu-latest
     permissions:
