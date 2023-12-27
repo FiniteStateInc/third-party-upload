@@ -23,19 +23,19 @@ By default, the new version adopts the asset's existing values for Business Unit
 
 ## Inputs
 
-| parameter | description | required | default |
-| --- | --- | --- | --- |
-| finite-state-client-id | Finite State API client ID. This must be provided by Finite State support team. | `true` |  |
-| finite-state-secret | Finite State API secret. This must be provided by Finite State support team. | `true` |  |
-| finite-state-organization-context | Organization context. This must be provided by Finite State support team. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. | `true` |  |
-| asset-id | Asset ID of the asset that the new version will belong to. | `true` |  |
-| version | Specify a name for the new asset version. | `true` |  |
-| file-path | Path to the file to be uploaded to the asset version. | `true` |  |
-| test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list](https://docs.finitestate.io/supported-file-types). | `true` |  |
-| business-unit-id | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used. | `false` |  |
-| created-by-user-id | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used. | `false` |  |
-| product-id | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used. | `false` |  |
-| artifact-description | (optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). | `false` |  |
+| parameter | description | required | type | default |
+| --- | --- | --- | --- | --- |
+| finite-state-client-id            | Finite State API client ID                                                                                                                           | `true`   | `string`   |         |
+| finite-state-secret               | Finite State API secret                                                                                                                              | `true`   | `string`   |         |
+| finite-state-organization-context | The Organization-Context should have been provided to you by your Finite State representative and looks like `xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`                    | `true`   | `string`   |         |
+| asset-id                          | Asset ID for the asset that the new  asset version will belong to                                                                                                             | `true`   | `string`   |         |
+| version                           | The name of the asset version that will be created                                                                                                  | `true`   | `string`   |         |
+| file-path                         | Local path of the file to be uploaded                                                                                                                   | `true`   | `string`   |         |
+| test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list](https://docs.finitestate.io/supported-file-types). | `true` | `string` |  |
+| business-unit-id | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used. | `false` | `string`  |  |
+| created-by-user-id | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used. | `false` | `string`  |  |
+| product-id | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used. | `false` | `string`  |  |
+| artifact-description | (optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). | `false` | `string`  |  |
 <!-- action-docs-inputs -->
 
 <!-- action-docs-outputs -->
@@ -46,7 +46,7 @@ By default, the new version adopts the asset's existing values for Business Unit
 | --- | --- |
 | response | Response from Finite State servers. |
 | error | Error message or details on why the action failed. |
-| asset-version-url | Finite State Binary Analysis URL for the uploaded file. |
+| asset-version-url | URL to view your results in the Finite State Platform |
 
 <!-- action-docs-outputs -->
 
