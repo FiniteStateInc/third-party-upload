@@ -32,8 +32,8 @@ By default, the new version adopts the asset's existing values for Business Unit
 | version                           | The name of the asset version that will be created                                                                                                  | `true`   | `string`   |         |
 | file-path                         | Local path of the file to be uploaded                                                                                                                   | `true`   | `string`   |         |
 | test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list](https://docs.finitestate.io/supported-file-types). | `true` | `string` |  |
-| automatic-comment | Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in Finite State. | `false`  | `boolean`   | `false` |
-| github-token | Token used to generate comment in a pr. Only required if automatic-comment input is true. | `false` | `string`   |  |
+| automatic-comment | Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in the Finite State Platform. | `false`  | `boolean`   | `false` |
+| github-token | Token used to generate a comment in a the PR. Only required if automatic-comment input is true. | `false` | `string`   |  |
 | business-unit-id | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used. | `false` | `string`  |  |
 | created-by-user-id | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used. | `false` | `string`  |  |
 | product-id | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used. | `false` | `string`  |  |
@@ -89,7 +89,7 @@ You will also need to add some code into your workflow. We have provided an exam
 **Example:**
 
 ```yaml
-uses: FiniteStateInc/third-party-upload@v1.0.0
+uses: FiniteStateInc/third-party-upload@v1.1.0
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -103,12 +103,12 @@ Possible `test-types` values can be found at [this link](https://github.com/Fini
 
 Using the previous code you won't get any comments in the pull request, but file will be upload to Finite State Platform and you get the link as output of the action.
 
-### Auto generation of comments
-The following example includes optional parameters `github-token` and `automatic-comment` to auto generate a comment in a pull request:
+### Auto-Generation of PR Comments
+The following example includes optional parameters `github-token` and `automatic-comment` to auto-generate a comment in a pull request:
 
 **Example:**
 ```yaml
-uses: FiniteStateInc/third-party-upload@v1.0.0
+uses: FiniteStateInc/third-party-upload@v1.1.0
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -117,8 +117,8 @@ with:
   version: # The name of the new Asset Version that will be created
   file-path: # The path to the file that will be uploaded to the Finite State Platform (e.g., ./cyclonedx.sbom.json)
   test-type: # The type of third-party scan being uploaded (e.g., cyclonedx). See below for more details.
-  github-token: ${{ secrets.GITHUB_TOKEN }} # optional if you would like to generate the comment automatically in the PR
-  automatic-comment: true # optional if you would like to generate the comment automatically in the PR
+  github-token: ${{ secrets.GITHUB_TOKEN }} # Optional if you would like to generate the comment automatically in the PR
+  automatic-comment: true # Optional if you would like to generate the comment automatically in the PR
 ```
 
 ## Action Debugging
@@ -177,7 +177,7 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: SBOM analysis
-        uses: FiniteStateInc/third-party-upload@v1.0.0
+        uses: FiniteStateInc/third-party-upload@v1.1.0
         id: third_party_upload
         with:
           finite-state-client-id: ${{ secrets.CLIENT_ID }}
