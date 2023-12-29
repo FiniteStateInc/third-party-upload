@@ -1,6 +1,9 @@
 # action.yml
-name: 'third-party-upload'
+name: 'Finite State Third Party Upload'
 description: 'Upload a third-party scan to the Finite State Platform for analysis.'
+branding:
+  icon: 'upload-cloud'
+  color: 'orange'
 inputs:
   finite-state-client-id:  # id of input
     description: 'Finite State API client ID. This must be provided by Finite State support team.'
