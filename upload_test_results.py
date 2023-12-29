@@ -8,11 +8,10 @@ from utils import (
     extract_asset_version,
     set_multiline_output,
     set_output,
-    generate_comment
+    generate_comment,
 )
-from github_utils import (
-    is_pull_request
-)
+from github_utils import is_pull_request
+
 # configure a logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -68,7 +67,7 @@ def create_and_upload_test_results():
         error = msg
         logger.error(msg)
         logger.debug(e)
-    
+
     if error == None:
         # Authenticate
         try:
@@ -77,7 +76,9 @@ def create_and_upload_test_results():
                 INPUT_FINITE_STATE_CLIENT_ID, INPUT_FINITE_STATE_SECRET
             )
         except Exception as e:
-            msg = f"Caught an exception trying to get and auth token on Finite State: {e}"
+            msg = (
+                f"Caught an exception trying to get and auth token on Finite State: {e}"
+            )
             error = msg
             logger.error(msg)
             logger.debug(e)
@@ -146,6 +147,7 @@ def create_and_upload_test_results():
     else:
         set_multiline_output("error", error)
         logger.error(error)
+
 
 if __name__ == "__main__":
     create_and_upload_test_results()
