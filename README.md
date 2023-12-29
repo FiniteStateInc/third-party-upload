@@ -32,6 +32,8 @@ By default, the new version adopts the asset's existing values for Business Unit
 | version                           | The name of the asset version that will be created                                                                                                  | `true`   | `string`   |         |
 | file-path                         | Local path of the file to be uploaded                                                                                                                   | `true`   | `string`   |         |
 | test-type | Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list](https://docs.finitestate.io/supported-file-types). | `true` | `string` |  |
+| automatic-comment | Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in Finite State. | `false`  | `boolean`   | `false` |
+| github-token | Token used to generate comment in a pr. Only required if automatic-comment input is true. | `false` | `string`   |  |
 | business-unit-id | (optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used. | `false` | `string`  |  |
 | created-by-user-id | (optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used. | `false` | `string`  |  |
 | product-id | (optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used. | `false` | `string`  |  |
@@ -68,6 +70,18 @@ on:
     - cron: "0 0 * * *"
 ```
 
+If you want the PR to automatically generate a comment with the link to the results on the Finite State Platform, make sure to grant the necessary permissions in your workflow. This allows the action to post the comment using the GitHub workflow token.
+
+**Example**:
+
+```yaml
+name: Your workflow
+permissions:
+  pull-requests: write
+  contents: read
+
+```
+
 ## Usage of this Action
 
 You will also need to add some code into your workflow. We have provided an example below. Note, in the example, we only include the required parameters. Refer to the **Inputs** section for more details, including descriptions of optional fields.
@@ -75,7 +89,7 @@ You will also need to add some code into your workflow. We have provided an exam
 **Example:**
 
 ```yaml
-uses: @FiniteStateInc/third-party-upload@v1.0.0
+uses: FiniteStateInc/third-party-upload@v1.0.0
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -85,8 +99,27 @@ with:
   file-path: # The path to the file that will be uploaded to the Finite State Platform (e.g., ./cyclonedx.sbom.json)
   test-type: # The type of third-party scan being uploaded (e.g., cyclonedx). See below for more details.
 ```
-
 Possible `test-types` values can be found at [this link](https://github.com/FiniteStateInc/finite-state-asoc/blob/5f04a982501ab37c9356cddc6e5c65ac6d6a563a/graphql-api/business/src/resolvers/mutations/uploads/accepted_test_types.py#L7).
+
+Using the previous code you won't get any comments in the pull request, but file will be upload to Finite State Platform and you get the link as output of the action.
+
+### Auto generation of comments
+The following example includes optional parameters `github-token` and `automatic-comment` to auto generate a comment in a pull request:
+
+**Example:**
+```yaml
+uses: FiniteStateInc/third-party-upload@v1.0.0
+with:
+  finite-state-client-id: ${{ secrets.CLIENT_ID }}
+  finite-state-secret: ${{ secrets.CLIENT_SECRET }}
+  finite-state-organization-context: ${{ secrets.ORGANIZATION_CONTEXT }}
+  asset-id: # The ID of the Asset associated with this scan
+  version: # The name of the new Asset Version that will be created
+  file-path: # The path to the file that will be uploaded to the Finite State Platform (e.g., ./cyclonedx.sbom.json)
+  test-type: # The type of third-party scan being uploaded (e.g., cyclonedx). See below for more details.
+  github-token: ${{ secrets.GITHUB_TOKEN }} # optional if you would like to generate the comment automatically in the PR
+  automatic-comment: true # optional if you would like to generate the comment automatically in the PR
+```
 
 ## Action Debugging
 
@@ -104,7 +137,9 @@ Ensure to replace certain values, as indicated in the example workflow:
 
 ```yaml
 name: Build
-
+permissions:
+  pull-requests: write
+  contents: read
 on:
   pull_request:
     branches:
@@ -142,7 +177,7 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: SBOM analysis
-        uses: @FiniteStateInc/third-party-upload@v1.0.0
+        uses: FiniteStateInc/third-party-upload@v1.0.0
         id: third_party_upload
         with:
           finite-state-client-id: ${{ secrets.CLIENT_ID }}
@@ -152,7 +187,8 @@ jobs:
           version: ${{env.COMMIT_HASH}} # You can name this version anything you'd like. Here, we're using the git commit hash associated with the current run.
           file-path: # Add the same path of the "Upload third-party scan" step here.
           test-type: # The type of third-party scan being uploaded (e.g., cyclonedx)
-
+          github-token: ${{ secrets.GITHUB_TOKEN }} # optional if you would like to generate the comment automatically in the PR
+          automatic-comment: true # optional if you would like to generate the comment automatically in the PR
       - name: Set response of binary quick scan
         if: steps.third_party_upload.outcome=='success'
         id: set_response
@@ -164,23 +200,3 @@ jobs:
       ASSET_VERSION_URL: ${{steps.third_party_upload.outputs.asset-version-url}}
       ERROR: ${{steps.third_party_upload.outputs.error}}
       RESPONSE: ${{steps.third_party_upload.outputs.response}}
-
-  show-link-as-comment: # This job generates a comment automatically in the PR in order to link to the Finite State Platform
-    needs: finitestate-third-party-upload
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Add link to finitestate
-        uses: mshick/add-pr-comment@v2
-        with:
-          message: |
-            **Hello**, Finite State is uploading your scan! :rocket:.
-            Please <a href="${{needs.finitestate-third-party-upload.outputs.ASSET_VERSION_URL}}">click here</a> to see the progress of the analysis over your file.
-            <br />
-
-            <a href="https://platform.finitestate.io/">Finite State</a>
-          message-failure: |
-            **Hello**, We're sorry, but something went wrong. Please contact Finite State Support.
-            <a href="https://platform.finitestate.io/">Finite State</a>
-```
