@@ -26,6 +26,13 @@ inputs:
   test-type:
     description: 'Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list.](https://docs.finitestate.io/supported-file-types).'
     required: true  
+  automatic-comment:
+    description: Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in Finite State.
+    required: false
+    default: false  
+  github-token:
+    description: Token used to generate comment in a pr. Only required if automatic-comment input is true.
+    required: false
   business-unit-id:
     description: '(optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used.'
     required: false
