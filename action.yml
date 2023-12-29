@@ -1,5 +1,5 @@
 # action.yml
-name: 'Finite State Third Party Upload'
+name: 'Finite State Third-Party Upload'
 description: 'Upload a third-party scan to the Finite State Platform for analysis.'
 branding:
   icon: 'upload-cloud'

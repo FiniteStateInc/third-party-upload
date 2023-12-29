@@ -89,7 +89,7 @@ You will also need to add some code into your workflow. We have provided an exam
 **Example:**
 
 ```yaml
-uses: FiniteStateInc/third-party-upload@v1.1.0
+uses: FiniteStateInc/third-party-upload@v1.1.1
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -108,7 +108,7 @@ The following example includes optional parameters `github-token` and `automatic
 
 **Example:**
 ```yaml
-uses: FiniteStateInc/third-party-upload@v1.1.0
+uses: FiniteStateInc/third-party-upload@v1.1.1
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -177,7 +177,7 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: SBOM analysis
-        uses: FiniteStateInc/third-party-upload@v1.1.0
+        uses: FiniteStateInc/third-party-upload@v1.1.1
         id: third_party_upload
         with:
           finite-state-client-id: ${{ secrets.CLIENT_ID }}
