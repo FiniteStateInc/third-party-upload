@@ -1,7 +1,12 @@
 import uuid
 import re
 import os
-
+from github_utils import (
+    extract_pull_request_number,
+    extract_repository_owner,
+    extract_repository_name,
+    comment_on_pr,
+)
 
 def set_multiline_output(name, value):
     with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
@@ -29,3 +34,28 @@ def extract_asset_version(input_string):
         return asset_version_value
     else:
         return None  # Return None if asset version value is not found
+
+
+
+def generate_comment(github_token, asset_version_url, logger):
+    pull_request_number = extract_pull_request_number()
+    repo_owner = extract_repository_owner()
+    repo_name = extract_repository_name()
+    comment = (
+        "**Hello**, Finite State is uploading your scan! :rocket:. \n"
+        "Please, [click here]({asset_version_url}) to see the progress of the analysis over your file."
+        "<br />\n"
+        "[Finite State](https://platform.finitestate.io/)"
+    )
+  
+    formatted_comment = comment.format(asset_version_url=asset_version_url)
+    response = comment_on_pr(
+        formatted_comment, github_token, pull_request_number, repo_owner, repo_name
+    )
+    if response.status_code == 201:
+        logger.info("Comment posted successfully")
+    else:
+        logger.error(
+            f"Failed to post comment. Status code: {response.status_code} {response.text}"
+        )
+        logger.debug(response)
