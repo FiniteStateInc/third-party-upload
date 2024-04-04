@@ -1,4 +1,3 @@
-
 # Third party upload GitHub Action
 
 This JS action for GitHub was created using this repository as template:
