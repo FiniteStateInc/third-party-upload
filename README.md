@@ -7,7 +7,7 @@
 
 ## Description
 
-The `third-party-upload` Github Action allows you to integrate Finite State's
+The `third-party-upload` GitHub Action allows you to integrate Finite State's
 third-party upload scanning capabilities into your workflow.
 
 The action will:
