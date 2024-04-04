@@ -61,7 +61,9 @@ describe('main', () => {
     await runPython()
     expect(mockSpawn).toHaveBeenCalledWith(
       'python',
-      expect.arrayContaining([expect.stringContaining('upload_binary.py')]),
+      expect.arrayContaining([
+        expect.stringContaining('upload_test_results.py')
+      ]),
       expect.objectContaining({
         shell: true,
         env: expect.any(Object) // Adjust as needed for your test
