@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from test_upload_test_results import create_and_upload_test_results
+from upload_test_results import create_and_upload_test_results
 
 
 class TestCreateAndUploadTestResults(unittest.TestCase):
@@ -21,13 +21,13 @@ class TestCreateAndUploadTestResults(unittest.TestCase):
         mock_logger_instance = MagicMock()
         mock_logger.return_value = mock_logger_instance
         mock_environ.get.side_effect = lambda key: {
-            "INPUT_FINITE-STATE-CLIENT-ID": "your_client_id",
-            "INPUT_FINITE-STATE-SECRET": "your_secret",
-            "INPUT_FINITE-ORGANIZATION-CONTEXT": "org_context",
-            "INPUT_ASSET-ID": 123456,
+            "INPUT_FINITE_STATE_CLIENT_ID": "your_client_id",
+            "INPUT_FINITE_STATE_SECRET": "your_secret",
+            "INPUT_FINITE_ORGANIZATION_CONTEXT": "org_context",
+            "INPUT_ASSET_ID": 123456,
             "INPUT_VERSION": 1,
-            "INPUT_FILE-PATH": "cyclonedx.sbom.json",
-            "INPUT_TEST-TYPE": "cyclonedx",
+            "INPUT_FILE_PATH": "cyclonedx.sbom.json",
+            "INPUT_TEST_TYPE": "cyclonedx",
         }.get(key)
         # Mock the finite_state_sdk methods and responses as needed
         mock_token = "mock_token"
@@ -65,12 +65,12 @@ class TestCreateAndUploadTestResults(unittest.TestCase):
         mock_logger_instance = MagicMock()
         mock_logger.return_value = mock_logger_instance
         mock_environ.get.side_effect = lambda key: {
-            "INPUT_FINITE-STATE-CLIENT-ID": "your_client_id",
-            "INPUT_FINITE-STATE-SECRET": "your_secret",
-            "INPUT_FINITE-ORGANIZATION-CONTEXT": "org_context",
-            "INPUT_ASSET-ID": 123456,
+            "INPUT_FINITE_STATE_CLIENT_ID": "your_client_id",
+            "INPUT_FINITE_STATE_SECRET": "your_secret",
+            "INPUT_FINITE_ORGANIZATION_CONTEXT": "org_context",
+            "INPUT_ASSET_ID": 123456,
             "INPUT_VERSION": 1,
-            "INPUT_FILE-PATH": "./test.bin",
+            "INPUT_FILE_PATH": "./test.bin",
         }.get(key)
 
         # Mock the finite_state_sdk methods and responses as needed

@@ -1,4 +1,3 @@
-# action.yml
 name: 'Finite State Third-Party Upload'
 description: 'Upload a third-party scan to the Finite State Platform for analysis.'
 branding:
@@ -54,5 +53,7 @@ outputs:
     description: 'Finite State Binary Analysis URL for the uploaded file.'
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: node20
+  main: dist/index.js
+
+readme: 'ACTION_README.md'

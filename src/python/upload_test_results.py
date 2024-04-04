@@ -35,23 +35,23 @@ logger.addHandler(consoleHandler)
 def create_and_upload_test_results():
     try:
         # required parameters:
-        INPUT_FINITE_STATE_CLIENT_ID = os.environ.get("INPUT_FINITE-STATE-CLIENT-ID")
-        INPUT_FINITE_STATE_SECRET = os.environ.get("INPUT_FINITE-STATE-SECRET")
+        INPUT_FINITE_STATE_CLIENT_ID = os.environ.get("INPUT_FINITE_STATE_CLIENT_ID")
+        INPUT_FINITE_STATE_SECRET = os.environ.get("INPUT_FINITE_STATE_SECRET")
         INPUT_FINITE_STATE_ORGANIZATION_CONTEXT = os.environ.get(
-            "INPUT_FINITE-STATE-ORGANIZATION-CONTEXT"
+            "INPUT_FINITE_STATE_ORGANIZATION_CONTEXT"
         )
-        INPUT_ASSET_ID = os.environ.get("INPUT_ASSET-ID")
+        INPUT_ASSET_ID = os.environ.get("INPUT_ASSET_ID")
         INPUT_VERSION = os.environ.get("INPUT_VERSION")
-        INPUT_FILE_PATH = os.environ.get("INPUT_FILE-PATH")
-        INPUT_TEST_TYPE = os.environ.get("INPUT_TEST-TYPE")
+        INPUT_FILE_PATH = os.environ.get("INPUT_FILE_PATH")
+        INPUT_TEST_TYPE = os.environ.get("INPUT_TEST_TYPE")
 
         # non required parameters:
-        INPUT_AUTOMATIC_COMMENT = os.environ.get("INPUT_AUTOMATIC-COMMENT") == "true"
-        INPUT_GITHUB_TOKEN = os.environ.get("INPUT_GITHUB-TOKEN")
-        INPUT_BUSINESS_UNIT_ID = os.environ.get("INPUT_BUSINESS-UNIT-ID")
-        INPUT_CREATED_BY_USER_ID = os.environ.get("INPUT_CREATED-BY-USER-ID")
-        INPUT_PRODUCT_ID = os.environ.get("INPUT_PRODUCT-ID")
-        INPUT_ARTIFACT_DESCRIPTION = os.environ.get("INPUT_ARTIFACT-DESCRIPTION")
+        INPUT_AUTOMATIC_COMMENT = os.environ.get("INPUT_AUTOMATIC_COMMENT") == "true"
+        INPUT_GITHUB_TOKEN = os.environ.get("INPUT_GITHUB_TOKEN")
+        INPUT_BUSINESS_UNIT_ID = os.environ.get("INPUT_BUSINESS_UNIT_ID")
+        INPUT_CREATED_BY_USER_ID = os.environ.get("INPUT_CREATED_BY_USER_ID")
+        INPUT_PRODUCT_ID = os.environ.get("INPUT_PRODUCT_ID")
+        INPUT_ARTIFACT_DESCRIPTION = os.environ.get("INPUT_ARTIFACT_DESCRIPTION")
     except KeyError:
         msg = f"Required inputs not available. Please, check required inputs definition"
         error = msg
