@@ -12,7 +12,7 @@ export async function getInputs(): Promise<object> {
     INPUT_ASSET_ID: core.getInput('ASSET-ID'),
     INPUT_VERSION: core.getInput('VERSION'),
     INPUT_FILE_PATH: core.getInput('FILE-PATH'),
-    INPUT_QUICK_SCAN: core.getInput('QUICK-SCAN'),
+    INPUT_TEST_TYPE: core.getInput('TEST-TYPE'),
 
     // non required parameters:
     INPUT_BUSINESS_UNIT_ID: core.getInput('BUSINESS-UNIT-ID'),
