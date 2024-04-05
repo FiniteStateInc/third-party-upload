@@ -12,7 +12,7 @@ jest.mock('../src/python', () => {
       INPUT_ASSET_ID: 'asset_id',
       INPUT_VERSION: 'version',
       INPUT_FILE_PATH: 'file_path',
-      INPUT_QUICK_SCAN: true,
+      INPUT_TEST_TYPE: 'cyclonedx',
 
       // non required parameters:
       INPUT_BUSINESS_UNIT_ID: 'business_unit',
