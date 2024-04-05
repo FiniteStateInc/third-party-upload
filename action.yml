@@ -1,18 +1,24 @@
-# action.yml
 name: 'Finite State Third-Party Upload'
-description: 'Upload a third-party scan to the Finite State Platform for analysis.'
+description:
+  'Upload a third-party scan to the Finite State Platform for analysis.'
 branding:
   icon: 'upload-cloud'
   color: 'orange'
 inputs:
-  finite-state-client-id:  # id of input
-    description: 'Finite State API client ID. This must be provided by Finite State support team.'
+  finite-state-client-id: # id of input
+    description:
+      'Finite State API client ID. This must be provided by Finite State support
+      team.'
     required: true
-  finite-state-secret: 
-    description: 'Finite State API secret. This must be provided by Finite State support team.'
+  finite-state-secret:
+    description:
+      'Finite State API secret. This must be provided by Finite State support
+      team.'
     required: true
-  finite-state-organization-context: 
-    description: 'Organization context. This must be provided by Finite State support team. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.'
+  finite-state-organization-context:
+    description:
+      'Organization context. This must be provided by Finite State support team.
+      It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.'
     required: true
   asset-id:
     description: 'Asset ID of the asset that the new version will belong to.'
@@ -24,26 +30,42 @@ inputs:
     description: 'Path to the file to be uploaded to the asset version.'
     required: true
   test-type:
-    description: 'Test type. This must be one of the list of supported upload types. For the full list of supported upload types, review [this list.](https://docs.finitestate.io/supported-file-types).'
-    required: true  
+    description:
+      'Test type. This must be one of the list of supported upload types. For
+      the full list of supported upload types, review [this
+      list.](https://docs.finitestate.io/supported-file-types).'
+    required: true
   automatic-comment:
-    description: Defaults to false. If it is true, it will generate a comment in the PR with the link to the Asset version URL in Finite State.
+    description:
+      Defaults to false. If it is true, it will generate a comment in the PR
+      with the link to the Asset version URL in Finite State.
     required: false
-    default: false  
+    default: false
   github-token:
-    description: Token used to generate comment in a pr. Only required if automatic-comment input is true.
+    description:
+      Token used to generate comment in a pr. Only required if automatic-comment
+      input is true.
     required: false
   business-unit-id:
-    description: '(optional) Business Unit ID to assign to the new asset version. If not provided, the existing business unit belonging to the asset will be used.'
+    description:
+      '(optional) Business Unit ID to assign to the new asset version. If not
+      provided, the existing business unit belonging to the asset will be used.'
     required: false
   created-by-user-id:
-    description: '(optional) Created By User ID to assign to the asset version. If not provided, the existing Created By User for the asset will be used.'
+    description:
+      '(optional) Created By User ID to assign to the asset version. If not
+      provided, the existing Created By User for the asset will be used.'
     required: false
   product-id:
-    description: '(optional) Product ID to assign to the asset version. If not provided, the existing product for the asset will be used.'
+    description:
+      '(optional) Product ID to assign to the asset version. If not provided,
+      the existing product for the asset will be used.'
     required: false
   artifact-description:
-    description: '(optional) Description of the artifact being scanned (e.g. "Source Code Repository", "Container Image"). If not provided, the default artifact description will be used.'
+    description:
+      '(optional) Description of the artifact being scanned (e.g. "Source Code
+      Repository", "Container Image"). If not provided, the default artifact
+      description will be used.'
     required: false
 outputs:
   response:
@@ -54,5 +76,5 @@ outputs:
     description: 'Finite State Binary Analysis URL for the uploaded file.'
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: node20
+  main: dist/index.js
