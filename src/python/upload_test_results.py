@@ -98,6 +98,7 @@ def create_and_upload_test_results():
                         product_id=INPUT_PRODUCT_ID,
                         artifact_description=INPUT_ARTIFACT_DESCRIPTION,
                         test_type=INPUT_TEST_TYPE,
+                        upload_method=finite_state_sdk.UploadMethod.GITHUB_INTEGRATION,
                     )
                 )
                 set_multiline_output("response", response)
