@@ -67,7 +67,7 @@ def create_and_upload_test_results():
         error = msg
         logger.error(msg)
 
-    if error == None:
+    if error is None:
         # Authenticate
         try:
             logger.info("Starting - Authentication")
@@ -83,7 +83,7 @@ def create_and_upload_test_results():
             logger.debug(e)
 
         # Create new asset version an upload test results:
-        if error == None:
+        if error is None:
             try:
                 response = (
                     finite_state_sdk.create_new_asset_version_and_upload_test_results(
@@ -120,7 +120,7 @@ def create_and_upload_test_results():
                 logger.error(msg)
                 logger.debug(e)
 
-            if error == None:
+            if error is None:
                 logger.info("File uploaded - Extracting asset version")
                 set_multiline_output("response", json.dumps(response, indent=4))
                 asset_version_url = "https://platform.finitestate.io/artifacts/{asset_id}/versions/{version}".format(
