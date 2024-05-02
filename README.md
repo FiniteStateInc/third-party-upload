@@ -28,7 +28,7 @@ and Created By User. If you need to change these, you can provide IDs for them.
 >
 > To avoid issues, consider using a GitHub-hosted runner image like
 > 'ubuntu-latest' or 'microsoft-latest' that comes pre-installed with both
-> Node.js and Python.
+> Node.js and Python required versions.
 
 <!-- action-docs-description -->
 
@@ -113,7 +113,7 @@ optional fields.
 **Example:**
 
 ```yaml
-uses: FiniteStateInc/third-party-upload@v2.0.0
+uses: FiniteStateInc/third-party-upload@v2.0.1
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -212,7 +212,7 @@ jobs:
           path: # The path to the scan results generated in the previous step
 
       - name: SBOM analysis
-        uses: FiniteStateInc/third-party-upload@v2.0.0
+        uses: FiniteStateInc/third-party-upload@v2.0.1
         id: third_party_upload
         with:
           finite-state-client-id: ${{ secrets.CLIENT_ID }}
