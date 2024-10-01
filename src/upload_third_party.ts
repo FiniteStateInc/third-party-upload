@@ -1,7 +1,5 @@
 import * as core from '@actions/core'
 import {
-  createNewAssetVersionAndUploadBinaryParams,
-  CreateNewAssetVersionAndUploadBinaryResponseType,
   CreateNewAssetVersionParams,
   FiniteStateSDK,
   UploadMethod
@@ -20,29 +18,41 @@ import {
 import { CompleteTestResultUploadResponse } from 'node_modules/finite-state-sdk/dist/fs/main'
 
 export async function getInputs(): Promise<githubInputParamsType> {
-    return {
-      inputFiniteStateClientId: sanitizeInput(core.getInput('FINITE-STATE-CLIENT-ID', {required: true})),
-      inputFiniteStateSecret: sanitizeInput(core.getInput('FINITE-STATE-SECRET', {required: true})),
-      inputFiniteStateOrganizationContext: sanitizeInput(core.getInput(
-        'FINITE-STATE-ORGANIZATION-CONTEXT', {required: true}
-      )),
-      inputAssetId: sanitizeInput(core.getInput('ASSET-ID', {required: true})),
-      inputVersion: sanitizeInput(core.getInput('VERSION', {required: true})),
-      inputFilePath: sanitizeInput(core.getInput('FILE-PATH', {required: true})),
-      inputTestType: sanitizeInput(core.getInput('TEST-TYPE', {required: true})),
-  
-      // non required parameters:
-      inputBusinessUnitId: sanitizeInput(core.getInput('BUSINESS-UNIT-ID')),
-      inputCreatedByUserId: sanitizeInput(core.getInput('CREATED-BY-USER-ID')),
-      inputProductId: sanitizeInput(core.getInput('PRODUCT-ID')),
-      inputArtifactDescription: sanitizeInput(core.getInput('ARTIFACT-DESCRIPTION')),
-      inputAutomaticComment: sanitizeInput(core.getBooleanInput('AUTOMATIC-COMMENT')),
-      inputGithubToken: sanitizeInput(core.getInput('GITHUB-TOKEN'))
-    }
+  return {
+    inputFiniteStateClientId: sanitizeInput(
+      core.getInput('FINITE-STATE-CLIENT-ID', { required: true })
+    ),
+    inputFiniteStateSecret: sanitizeInput(
+      core.getInput('FINITE-STATE-SECRET', { required: true })
+    ),
+    inputFiniteStateOrganizationContext: sanitizeInput(
+      core.getInput('FINITE-STATE-ORGANIZATION-CONTEXT', { required: true })
+    ),
+    inputAssetId: sanitizeInput(core.getInput('ASSET-ID', { required: true })),
+    inputVersion: sanitizeInput(core.getInput('VERSION', { required: true })),
+    inputFilePath: sanitizeInput(
+      core.getInput('FILE-PATH', { required: true })
+    ),
+    inputTestType: sanitizeInput(
+      core.getInput('TEST-TYPE', { required: true })
+    ),
+
+    // non required parameters:
+    inputBusinessUnitId: sanitizeInput(core.getInput('BUSINESS-UNIT-ID')),
+    inputCreatedByUserId: sanitizeInput(core.getInput('CREATED-BY-USER-ID')),
+    inputProductId: sanitizeInput(core.getInput('PRODUCT-ID')),
+    inputArtifactDescription: sanitizeInput(
+      core.getInput('ARTIFACT-DESCRIPTION')
+    ),
+    inputAutomaticComment: sanitizeInput(
+      core.getBooleanInput('AUTOMATIC-COMMENT')
+    ),
+    inputGithubToken: sanitizeInput(core.getInput('GITHUB-TOKEN'))
   }
+}
 
 export async function uploadThirdParty(): Promise<
-CompleteTestResultUploadResponse | undefined
+  CompleteTestResultUploadResponse | undefined
 > {
   const inputVariables = await getInputs()
   core.setSecret('FINITE-STATE-CLIENT-ID')
@@ -58,14 +68,14 @@ CompleteTestResultUploadResponse | undefined
     createdByUserId: inputVariables.inputCreatedByUserId,
     businessUnitId: inputVariables.inputBusinessUnitId,
     productId: inputVariables.inputProductId,
-    uploadMethod: UploadMethod.GITHUB_INTEGRATION,
+    uploadMethod: UploadMethod.GITHUB_INTEGRATION
   }
-  const clientId= inputVariables.inputFiniteStateClientId
-  const clientSecret=inputVariables.inputFiniteStateSecret
-  const organizationContext= inputVariables.inputFiniteStateOrganizationContext;
+  const clientId = inputVariables.inputFiniteStateClientId
+  const clientSecret = inputVariables.inputFiniteStateSecret
+  const organizationContext = inputVariables.inputFiniteStateOrganizationContext
   const automaticComment = inputVariables.inputAutomaticComment
-  const githubToken = inputVariables.inputGithubToken;
-  
+  const githubToken = inputVariables.inputGithubToken
+
   core.info('Starting - Authentication')
   let client: FiniteStateSDK | undefined
   try {
@@ -79,7 +89,8 @@ CompleteTestResultUploadResponse | undefined
 
   if (client) {
     try {
-      const response = await client.createNewAssetVersionAndUploadTestResults(params)
+      const response =
+        await client.createNewAssetVersionAndUploadTestResults(params)
       core.info('File uploaded')
       core.setOutput('response', response)
 

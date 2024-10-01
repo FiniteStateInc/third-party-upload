@@ -54,17 +54,17 @@ export async function generateComment(
 export type githubInputParamsType = {
   inputFiniteStateClientId: string
   inputFiniteStateSecret: string
-  inputFiniteStateOrganizationContext: string,
+  inputFiniteStateOrganizationContext: string
   inputAssetId: string
   inputVersion: string
   inputFilePath: string
-  inputTestType: string,
+  inputTestType: string
 
   // non required parameters:
   inputBusinessUnitId: string
   inputCreatedByUserId: string
   inputProductId: string
   inputArtifactDescription: string
-  inputAutomaticComment: boolean,
+  inputAutomaticComment: boolean
   inputGithubToken: string
 }

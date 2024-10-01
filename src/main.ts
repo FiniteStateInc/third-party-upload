@@ -11,9 +11,7 @@ export async function run(): Promise<void> {
     )
     await uploadThirdParty()
 
-    core.debug(
-      `Finish execute upload third party ${new Date().toTimeString()}`
-    )
+    core.debug(`Finish execute upload third party ${new Date().toTimeString()}`)
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.debug(`Error executing upload third party ${JSON.stringify(error)}`)

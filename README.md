@@ -21,14 +21,14 @@ and Created By User. If you need to change these, you can provide IDs for them.
 
 > [!WARNING]
 >
-> Warning: Ensure the GitHub Actions runner environment supports Node.js
-> when running workflows that include JavaScript scripts.
-> Using an incompatible runner environment may result in errors or unexpected
-> behavior during script execution.
+> Warning: Ensure the GitHub Actions runner environment supports Node.js when
+> running workflows that include JavaScript scripts. Using an incompatible
+> runner environment may result in errors or unexpected behavior during script
+> execution.
 >
 > To avoid issues, consider using a GitHub-hosted runner image like
-> 'ubuntu-latest' or 'microsoft-latest' that comes pre-installed with 
-> Node.js required version.
+> 'ubuntu-latest' or 'microsoft-latest' that comes pre-installed with Node.js
+> required version.
 
 <!-- action-docs-description -->
 
