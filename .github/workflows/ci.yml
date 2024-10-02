@@ -49,11 +49,15 @@ jobs:
 
       - name: Test
         id: npm-ci-test
-        run: npm run ci-test
+        run: npm run ci-test -- --passWithNoTests
 
   sbom_test_results:
     name: GitHub Actions Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
 
     steps:
       - name: Checkout

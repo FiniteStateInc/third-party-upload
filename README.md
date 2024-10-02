@@ -21,14 +21,14 @@ and Created By User. If you need to change these, you can provide IDs for them.
 
 > [!WARNING]
 >
-> Warning: Ensure the GitHub Actions runner environment supports both Node.js
-> and Python when running workflows that include JavaScript and Python scripts.
-> Using an incompatible runner environment may result in errors or unexpected
-> behavior during script execution.
+> Warning: Ensure the GitHub Actions runner environment supports Node.js when
+> running workflows that include JavaScript scripts. Using an incompatible
+> runner environment may result in errors or unexpected behavior during script
+> execution.
 >
 > To avoid issues, consider using a GitHub-hosted runner image like
-> 'ubuntu-latest' or 'microsoft-latest' that comes pre-installed with both
-> Node.js and Python required versions.
+> 'ubuntu-latest' or 'microsoft-latest' that comes pre-installed with Node.js
+> required version.
 
 <!-- action-docs-description -->
 
@@ -113,7 +113,7 @@ optional fields.
 **Example:**
 
 ```yaml
-uses: FiniteStateInc/third-party-upload@v2.0.1
+uses: FiniteStateInc/third-party-upload@v2.0.2
 with:
   finite-state-client-id: ${{ secrets.CLIENT_ID }}
   finite-state-secret: ${{ secrets.CLIENT_SECRET }}
@@ -212,7 +212,7 @@ jobs:
           path: # The path to the scan results generated in the previous step
 
       - name: SBOM analysis
-        uses: FiniteStateInc/third-party-upload@v2.0.1
+        uses: FiniteStateInc/third-party-upload@v2.0.2
         id: third_party_upload
         with:
           finite-state-client-id: ${{ secrets.CLIENT_ID }}
