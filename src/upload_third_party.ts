@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import {
+  CompleteTestResultUploadResponse,
   CreateNewAssetVersionParams,
   FiniteStateSDK,
   UploadMethod
@@ -15,7 +16,6 @@ import {
   githubInputParamsType,
   isPullRequest
 } from './lib/utils/github_utils'
-import { CompleteTestResultUploadResponse } from 'node_modules/finite-state-sdk/dist/fs/main'
 
 export async function getInputs(): Promise<githubInputParamsType> {
   return {

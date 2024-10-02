@@ -1,5 +1,5 @@
+import { CompleteTestResultUploadResponse } from 'finite-state-sdk'
 import * as fs from 'fs'
-import { CompleteTestResultUploadResponse } from 'node_modules/finite-state-sdk/dist/fs/main'
 import * as path from 'path'
 
 export async function extractAssetVersion(
